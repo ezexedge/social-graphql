@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { auth, googleAuthProvider } from '../../firebase';
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/client';
-
+import AuthForm from '../../components/forms/AuthForm';
 
 const USER_CREATE = gql`
     mutation userCreate {
@@ -16,15 +16,13 @@ const USER_CREATE = gql`
     }
 `;
 
-
 const Login = () => {
     const { dispatch } = useContext(AuthContext);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('gqlreactnode@gmail.com');
+    const [password, setPassword] = useState('gggggg');
     const [loading, setLoading] = useState(false);
 
     let history = useHistory();
-
 
     const [userCreate] = useMutation(USER_CREATE);
 
@@ -43,8 +41,7 @@ const Login = () => {
 
                 // send user info to our server mongodb to either update/create
                 userCreate();
-
-                history.push('/');
+                history.push('/profile');
             });
         } catch (error) {
             console.log('login error', error);
@@ -65,8 +62,7 @@ const Login = () => {
 
             // send user info to our server mongodb to either update/create
             userCreate();
-
-            history.push('/');
+            history.push('/profile');
         });
     };
 
@@ -76,37 +72,21 @@ const Login = () => {
             <button onClick={googleLogin} className="btn btn-raised btn-danger mt-5">
                 Login with Google
             </button>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label>Email Address</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="form-control"
-                        placeholder="Enter email"
-                        disabled={loading}
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="form-control"
-                        placeholder="Enter password"
-                        disabled={loading}
-                    />
-                </div>
-
-                <button className="btn btn-raised btn-primary" disabled={!email || !password || loading}>
-                    Submit
-                </button>
-            </form>
+            <AuthForm
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                loading={loading}
+                handleSubmit={handleSubmit}
+                showPasswordInput="true"
+            />
+            <Link className="text-danger float-right" to="/password/forgot">
+                Forgot Password
+            </Link>
         </div>
     );
 };
 
 export default Login;
+

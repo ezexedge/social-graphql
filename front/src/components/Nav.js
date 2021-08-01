@@ -3,22 +3,21 @@ import { Link, useHistory } from 'react-router-dom';
 import auth  from 'firebase';
 import { AuthContext } from '../context/authContext';
 
+
 const Nav = () => {
     const { state, dispatch } = useContext(AuthContext);
     let history = useHistory();
 
     const { user } = state;
 
-    const logout =  () => {
-         auth.auth().signOut()
+    const logout = () => {
+        auth().signOut();
         dispatch({
             type: 'LOGGED_IN_USER',
             payload: null
         });
         history.push('/login');
     };
-
-
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -39,6 +38,14 @@ const Nav = () => {
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
+                    {user && (
+                        <li className="nav-item active">
+                            <Link className="nav-link" to="/profile">
+                                {user && user.email.split('@')[0]}
+                            </Link>
+                        </li>
+                    )}
+
                     {!user && (
                         <Fragment>
                             <li className="nav-item active">

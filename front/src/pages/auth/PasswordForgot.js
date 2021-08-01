@@ -12,7 +12,7 @@ const PasswordForgot = () => {
         setLoading(true);
 
         const config = {
-            url: process.env.REACT_APP_PASSWORD_FORGOT_REDIRECT,
+            url: 'http://localhost:3000/login',
             handleCodeInApp: true
         };
 
