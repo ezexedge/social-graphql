@@ -5,6 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const { fileLoader, mergeTypes, mergeResolvers } = require('merge-graphql-schemas');
 require('dotenv').config();
+const { authCheck } = require('./helpers/auth');
 
 // express server
 const app = express();
@@ -34,7 +35,8 @@ const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers'))
 // graphql server
 const apolloServer = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    context: ({ req, res }) => ({ req, res })
 });
 
 // applyMiddleware method connects ApolloServer to a specific HTTP framework ie: express
@@ -44,7 +46,7 @@ apolloServer.applyMiddleware({ app });
 const httpserver = http.createServer(app);
 
 // rest endpoint
-app.get('/rest', function(req, res) {
+app.get('/rest', authCheck, function(req, res) {
     res.json({
         data: 'you hit rest endpoint great!'
     });
