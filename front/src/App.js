@@ -14,6 +14,9 @@ import PasswordForgot from './pages/auth/PasswordForgot';
 import Profile from './pages/auth/Profile';
 import Post from './pages/post/Post';
 import PasswordUpdate from './pages/auth/PasswordUpdate';
+import PublicRoute from './components/PublicRoute';
+import Users from './pages/Users';
+import SingleUser from './pages/SingleUser';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -43,10 +46,12 @@ const App = () => {
       <Switch>
 
           <Route exact path="/" component={Home} />
-            
-           <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/complete-registration" component={CompleteRegistration} />
+          <Route exact path="/users" component={Users} />
+          <Route exact path="/user/:username" component={SingleUser} />
+     
+          <PublicRoute exact path="/register" component={Register} />
+                <PublicRoute exact path="/login" component={Login} />
+               <Route exact path="/complete-registration" component={CompleteRegistration} />
           <Route exact path="/password/forgot" component={PasswordForgot} />
           <PrivateRoute exact path="/password/update" component={PasswordUpdate} />
                 <PrivateRoute exact path="/profile" component={Profile} />
